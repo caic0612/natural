@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity3</title>
+    <link rel="stylesheet" href="./css/Activity.css">
+    <link rel="stylesheet" href="./image/font_3337541_6wfzro9zhj2/iconfont.css">
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <h1 class="logo">Natural Reality</h1>
+            <ul>
+                <li><a href="index.html" class="label">官网首页</a></li>
+                <li><a href="Searchfound.html" class="label">搜索发现</a></li>
+                <li><a href="Activity.html" class="label change">比赛活动</a></li>
+                <li><a href="Personal.html" class="label">优质作品</a></li>
+                <li><a href="About.html" class="label">关于我们</a></li>
+            </ul>
+        </div>
+    </header>
+    <aside>
+      
+    </aside>
+    <!-- 图片过滤 -->
+    <section>
+      <div id="app">
+        <div class="Ganyinbox">
+          <h1 style="color: #fff;text-align: center;">Want to show your masterpiece on the Internet?</h1>
+          <h2 style="color: #fff;text-align: center; padding: 30px 0 0 0;">Come and sign up</h2>
+          <ul class="ul-list">
+            <li class="list active" data-filter="all">全部</li>
+            <li class="list" data-filter="hd">报名中</li>
+            <li class="list" data-filter="ps">评审中</li>
+            <li class="list" data-filter="js">已结束</li>
+        </ul>
+        <div class="product">
+          <div v-for="item in newStaff" :class="item.class">
+            <a href="javascript:;">
+              <img :src="item.image" alt="">
+              <div class="productwb">
+                  {{item.wb}}
+              </div>
+              <span class="producttxt">{{item.txt}}</span>
+            </a>
+          </div>
+        </div>
+          
+          <fen-ye v-bind:totalpages="total" :nowpage.sync="now">
+              
+          </fen-ye>
+      </div>
+    </section>
+    <!-- 底部 -->
+    <footer>
+        <div class="footers">
+          <div class="top">
+            <div class="top_left" style="float: left;">
+              <p style="font-weight: bold;">Natural Reality</p>
+            </div>
+            <div class="top_right" style="float: right;">
+              <div class="topbox"></div>
+              <div class="topbox"></div>
+              <div class="topbox"></div>
+              <div class="topbox"></div>
+              <div class="topbox"></div>
+            </div>
+          </div>
+          <hr>
+          <div class="centers">
+            <div class="link-boxes">
+              <ul class="box">
+                <li class="link_name">Company</li>
+                <li><a href="javascript:;">Home</a></li>
+                <li><a href="javascript:;">Contact us</a></li>
+                <li><a href="javascript:;">About us</a></li>
+                <li><a href="javascript:;">Get started</a></li>
+              </ul>
+              <ul class="box">
+                <li class="link_name">Services</li>
+                <li><a href="javascript:;">App design</a></li>
+                <li><a href="javascript:;">Web design</a></li>
+                <li><a href="javascript:;">Logo design</a></li>
+                <li><a href="javascript:;">Banner design</a></li>
+              </ul>
+              <ul class="box">
+                <li class="link_name">Account</li>
+                <li><a href="javascript:;">Profile</a></li>
+                <li><a href="javascript:;">My account</a></li>
+                <li><a href="javascript:;">Prefrences</a></li>
+                <li><a href="javascript:;">Purchase</a></li>
+              </ul>
+              <ul class="box">
+                <li class="link_name">Technology</li>
+                <li><a href="javascript:;">HTML & CSS</a></li>
+                <li><a href="javascript:;">JavaScript</a></li>
+                <li><a href="javascript:;">Vue</a></li>
+                <li><a href="javascript:;">JQuery</a></li>
+              </ul>
+              <ul class="box">
+                <li><i class="iconfont icon-QQ-circle-fill"></i></li>
+                <li><i class="iconfont icon-weixin"></i></li>
+                <li><i class="iconfont icon-weibo"></i></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </footer>
+    <script src="./js/vue.js"></script>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/Activity.js"></script>
+    <script>
+      Vue.component('fen-ye',{
+            props:[ 'totalpages','nowpage' ],
+            template:`
+            <div>
+                <slot name="head"></slot>
+                <ul class="fenYeBox">
+                    <li @click="prevPage">上一页</li>
+
+                    <li v-for="item in totalpages" :class="{act:item==nowpage}" @click="changepage(item)">{{item}}</li>
+
+                    <li @click="nextPage">下一页</li>
+                </ul>
+            </div>
+            `,
+            methods:{
+                changepage:function(n){
+                    this.$emit("update:nowpage",n);//通知父组件去修改now的变量
+                },
+                prevPage:function(){
+                  let n = this.nowpage;
+                  if(n>1){
+                    n--;
+                  }
+                  this.$emit('update:nowpage',n);
+                },
+                nextPage:function(){
+                  let n = this.nowpage;
+                  if(n < this.totalpages){
+                    n++
+                  }
+                  this.$emit('update:nowpage',n)
+                }
+                
+            }
+        })
+       
+        let app = new Vue({
+            el:'#app',
+            data:{
+                //total:5, //总页数
+                now:1, //当前页码
+                num:16,
+                staff:[
+                    {id:1,class:'itemBox hd',image:'./image/tj_fj01.jpg',txt:'报名中',wb:'感受自然风光'},
+                    {id:2,class:'itemBox hd',image:'./image/tj_ms01.jpg',txt:'报名中',wb:'美食大厨'},
+                    {id:3,class:'itemBox hd',image:'./image/tj_jz01.jpg',txt:'报名中',wb:'优雅名居'},
+                    {id:3,class:'itemBox ps',image:'./image/rx01.jpg',txt:'评审中',wb:'阳光下的少女'},
+                    {id:4,class:'itemBox ps',image:'./image/by1.jpg',txt:'评审中',wb:'自然'},
+                    {id:5,class:'itemBox hd',image:'./image/tj_cw01.jpg',txt:'报名中',wb:'宠物代餐'},
+                    {id:6,class:'itemBox hd',image:'./image/tj_rx01.jpg',txt:'报名中',wb:'阳光下的少女'},
+                    {id:7,class:'itemBox hd',image:'./image/tj_fj02.jpg',txt:'报名中',wb:'高峰初阳'},
+                    {id:8,class:'itemBox hd',image:'./image/tj_ms02.jpg',txt:'报名中',wb:'清凉一夏'},
+                    {id:9,class:'itemBox js',image:'./image/rx03.jpg',txt:'已结束',wb:'人与自然'},
+                    {id:10,class:'itemBox ps',image:'./image/by2.jpg',txt:'评审中',wb:'星空'},
+                    {id:11,class:'itemBox hd',image:'./image/tj_jz02.jpg',txt:'报名中',wb:'华夏名筑'},
+                    {id:12,class:'itemBox hd',image:'./image/tj_cw02.jpg',txt:'报名中',wb:'草地上的精灵'},
+                    {id:13,class:'itemBox ps',image:'./image/tj_jz03.jpg',txt:'评审中',wb:'闹中取静'},
+                    {id:14,class:'itemBox ps',image:'./image/tj_jz04.jpg',txt:'评审中',wb:'闹中取静'},
+                    {id:15,class:'itemBox ps',image:'./image/tj_rx02.jpg',txt:'评审中',wb:'人与自然'},
+                    {id:16,class:'itemBox ps',image:'./image/tj_cw05.jpg',txt:'评审中',wb:'萌宠'},
+                    {id:17,class:'itemBox hd',image:'./image/tj_fj03.jpg',txt:'报名中',wb:'高海拔的挑战'},
+                    {id:18,class:'itemBox hd',image:'./image/tj_fj01.jpg',txt:'报名中',wb:'自然风光'},
+                    {id:19,class:'itemBox hd',image:'./image/tj_rx03.jpg',txt:'报名中',wb:'人与自然'},
+                    {id:20,class:'itemBox hd',image:'./image/tj_cw03.jpg',txt:'报名中',wb:'萌宠'},
+                    {id:21,class:'itemBox hd',image:'./image/tj_cw04.jpg',txt:'报名中',wb:'萌宠'},
+                    {id:22,class:'itemBox ps',image:'./image/tj_cw02.jpg',txt:'评审中',wb:'萌宠'},
+                    {id:23,class:'itemBox ps',image:'./image/tj_ms03.jpg',txt:'评审中',wb:'一日之餐'},
+                    {id:24,class:'itemBox ps',image:'./image/tj_ms04.jpg',txt:'评审中',wb:'十二道风味'},
+                    {id:25,class:'itemBox ps',image:'./image/by3.jpg',txt:'评审中',wb:'星空'},
+                    {id:26,class:'itemBox ps',image:'./image/by5.jpg',txt:'评审中',wb:'星空'},
+                    {id:27,class:'itemBox ps',image:'./image/ms01.jpg',txt:'评审中',wb:'星空'},
+                    {id:28,class:'itemBox ps',image:'./image/ms02.jpg',txt:'评审中',wb:'十二道风味'},
+                    {id:29,class:'itemBox ps',image:'./image/ms03.jpg',txt:'评审中',wb:'一日之餐'},
+                    {id:30,class:'itemBox ps',image:'./image/ms04.jpg',txt:'评审中',wb:'十二道风味'},
+                    {id:31,class:'itemBox ps',image:'./image/rx01.jpg',txt:'评审中',wb:'十二道风味'},
+                    {id:32,class:'itemBox ps',image:'./image/rx02.jpg',txt:'评审中',wb:'阳光下的少女'},
+                    {id:33,class:'itemBox js',image:'./image/cw01.jpg',txt:'已结束',wb:'萌宠大战'},
+                    {id:34,class:'itemBox js',image:'./image/cw02.jpg',txt:'已结束',wb:'萌宠大战'},
+                    {id:35,class:'itemBox js',image:'./image/cw03.jpg',txt:'已结束',wb:'萌宠大战'},
+                    {id:36,class:'itemBox js',image:'./image/cw04.jpg',txt:'已结束',wb:'萌宠大战'},
+                    {id:37,class:'itemBox js',image:'./image/cw05.jpg',txt:'已结束',wb:'萌宠大战'},
+                    {id:38,class:'itemBox js',image:'./image/tj_rx02.jpg',txt:'已结束',wb:'人与自然'},
+                    {id:39,class:'itemBox js',image:'./image/tj_rx02.jpg',txt:'已结束',wb:'人与自然'},
+                    {id:40,class:'itemBox js',image:'./image/tj_cw05.jpg',txt:'已结束',wb:'萌宠'},
+                    {id:41,class:'itemBox js',image:'./image/rx01.jpg',txt:'已结束',wb:'阳光下的少女'},
+                    {id:42,class:'itemBox js',image:'./image/by1.jpg',txt:'已结束',wb:'自然'},
+                    {id:43,class:'itemBox js',image:'./image/by2.jpg',txt:'已结束',wb:'星空'},
+                    {id:44,class:'itemBox js',image:'./image/tj_rx01.jpg',txt:'已结束',wb:'阳光下的少女'},
+                    {id:45,class:'itemBox js',image:'./image/tj_fj02.jpg',txt:'已结束',wb:'高峰初阳'},
+                    {id:46,class:'itemBox js',image:'./image/tj_ms02.jpg',txt:'已结束',wb:'清凉一夏'},
+                    {id:47,class:'itemBox js',image:'./image/tj_jz02.jpg',txt:'已结束',wb:'华夏名筑'},
+                    {id:48,class:'itemBox js',image:'./image/tj_ms04.jpg',txt:'已结束',wb:'十二道风味'},
+                    {id:49,class:'itemBox js',image:'./image/tj_jz03.jpg',txt:'已结束',wb:'闹中取静'},
+                    {id:50,class:'itemBox js',image:'./image/tj_jz04.jpg',txt:'已结束',wb:'闹中取静'},
+                    {id:51,class:'itemBox js',image:'./image/tj_cw05.jpg',txt:'已结束',wb:'萌宠'},
+                    {id:52,class:'itemBox js',image:'./image/rx01.jpg',txt:'已结束',wb:'阳光下的少女'},
+                    {id:53,class:'itemBox js',image:'./image/by1.jpg',txt:'已结束',wb:'自然'},
+                    {id:54,class:'itemBox js',image:'./image/by2.jpg',txt:'已结束',wb:'星空'},
+                    {id:55,class:'itemBox js',image:'./image/tj_rx01.jpg',txt:'已结束',wb:'阳光下的少女'},
+                    {id:56,class:'itemBox js',image:'./image/tj_fj02.jpg',txt:'已结束',wb:'高峰初阳'},
+                    {id:57,class:'itemBox js',image:'./image/tj_ms02.jpg',txt:'已结束',wb:'清凉一夏'},
+                    {id:58,class:'itemBox js',image:'./image/tj_jz02.jpg',txt:'已结束',wb:'华夏名筑'},
+                    {id:59,class:'itemBox js',image:'./image/tj_ms04.jpg',txt:'已结束',wb:'十二道风味'},
+                    {id:60,class:'itemBox js',image:'./image/tj_jz03.jpg',txt:'已结束',wb:'闹中取静'},
+                    {id:61,class:'itemBox js',image:'./image/tj_jz04.jpg',txt:'已结束',wb:'闹中取静'}
+                ]
+            },
+           
+            computed:{
+                newStaff(){
+                    // return this.staff  ----> 子数组！！！  arr.slice(起始索引，结束索引)
+                    //  1. [0,3)        start = (now-1)*num
+                    //  2. [3,6)        end = start + num
+                    //  3. [6,9)
+                    let start = (this.now-1)*this.num;
+                    let end = start + this.num
+                    return this.staff.slice(start, end);
+                },
+                total(){
+                    /*
+                        取整方式： ① 四舍五入 Math.round(N) ② 向上取整 Math.ceil(N) ③ 向下取整 Maath.floor(N)
+                    */
+                    return Math.ceil(this.staff.length / this.num);
+                }
+            },
+            
+        })
+    </script>
+</body>
+</html>

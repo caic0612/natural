@@ -1,0 +1,17 @@
+.img{
+  width: 500px;
+  height: 500px;
+  background-image: url(../image/bg01.png);
+  background-size: cover;
+  display: flex;
+}
+.img>.item{
+  flex: 1;
+  background-image: url(../image/bg02.png);
+  background-size: cover;
+  background-position-x:calc(var(--index) * 10%);
+  transition: 1s;
+}
+.img:hover>.item{
+  transform: rotateY(90deg);
+}
